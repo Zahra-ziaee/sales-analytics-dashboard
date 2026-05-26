@@ -1,0 +1,5 @@
+region,total_sales,total_profit,total_orders,profit_margin
+West,725457.82,108418.45,1611,0.1494
+East,678781.24,91522.78,1401,0.1348
+Central,501239.89,39706.36,1175,0.0792
+South,391721.91,46749.43,822,0.1193
