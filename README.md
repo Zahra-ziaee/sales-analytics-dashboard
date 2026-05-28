@@ -304,6 +304,28 @@ Business recommendation:
 
 ## How to Run
 
+## Power BI Dashboard
+
+An interactive Power BI dashboard was created to visualize the main sales KPIs and business insights.
+
+Dashboard components include:
+
+- Total Sales
+- Total Profit
+- Profit Margin
+- Total Orders
+- Total Customers
+- Monthly Sales Trend
+- Sales by Region
+- Profit Margin by Category
+- Top Products by Sales
+- Key Business Insights
+
+Power BI file:
+
+```text
+powerbi/superstore_sales_dashboard.pbix
+
 ### 1. Clone the repository
 
 ```bash
