@@ -1,8 +1,8 @@
 # Sales Analytics Dashboard
 
-A business intelligence and analytics project for analyzing Superstore sales data using Python, SQL, SQLite, and data visualization.
+A business intelligence and analytics project for analyzing Superstore sales data using Python, SQL, SQLite, Power BI, Streamlit, and data visualization.
 
-This project demonstrates an end-to-end analytics workflow: data loading, data cleaning, SQL database creation, KPI extraction, regional/category analysis, monthly trend analysis, and dashboard-ready outputs.
+This project demonstrates an end-to-end analytics workflow: data loading, data cleaning, SQL database creation, KPI extraction, regional/category analysis, monthly trend analysis, product-level analysis, and dashboard-ready outputs.
 
 ---
 
@@ -10,7 +10,7 @@ This project demonstrates an end-to-end analytics workflow: data loading, data c
 
 Sales analytics helps businesses understand revenue performance, profitability, product contribution, customer behavior, and regional differences.
 
-This project analyzes the Superstore sales dataset and produces business KPIs, SQL query outputs, and visualizations that can be used as the foundation for a Power BI or BI dashboard.
+This project analyzes the Superstore sales dataset and produces business KPIs, SQL query outputs, visualizations, a Power BI dashboard, and a Streamlit dashboard.
 
 The project includes:
 
@@ -26,6 +26,8 @@ The project includes:
 - Top product analysis
 - Dashboard-ready CSV outputs
 - Result visualizations
+- Power BI dashboard
+- Streamlit dashboard
 
 ---
 
@@ -73,9 +75,19 @@ The raw dataset is excluded from GitHub using `.gitignore`.
 ```text
 sales-analytics-dashboard/
 │
+├── app/
+│   └── streamlit_app.py
+│
 ├── data/
 │   ├── raw/
 │   └── processed/
+│
+├── powerbi/
+│   ├── superstore_sales_dashboard.pbix
+│   ├── dashboard_screenshot.png
+│   ├── streamlit_dashboard_kpis.png
+│   ├── streamlit_dashboard_trends.png
+│   └── streamlit_dashboard_insights.png
 │
 ├── results/
 │   ├── figures/
@@ -325,6 +337,10 @@ Power BI file:
 powerbi/superstore_sales_dashboard.pbix
 ```
 
+### Power BI Dashboard Preview
+
+![Power BI Dashboard](powerbi/dashboard_screenshot.png)
+
 ---
 
 ## Streamlit Dashboard
@@ -346,6 +362,20 @@ The dashboard includes:
 - Monthly Sales Trend
 - Top Products by Sales
 - Business Insights
+
+### Streamlit Dashboard Preview
+
+#### Main KPIs and Sales Overview
+
+![Streamlit Dashboard KPIs](powerbi/streamlit_dashboard_kpis.png)
+
+#### Profitability and Monthly Trends
+
+![Streamlit Dashboard Trends](powerbi/streamlit_dashboard_trends.png)
+
+#### Top Products and Business Insights
+
+![Streamlit Dashboard Insights](powerbi/streamlit_dashboard_insights.png)
 
 ---
 
@@ -415,6 +445,10 @@ results/figures/sales_by_category.png
 results/figures/monthly_sales_trend.png
 
 powerbi/superstore_sales_dashboard.pbix
+powerbi/dashboard_screenshot.png
+powerbi/streamlit_dashboard_kpis.png
+powerbi/streamlit_dashboard_trends.png
+powerbi/streamlit_dashboard_insights.png
 ```
 
 ---
@@ -460,14 +494,15 @@ Completed:
 - Result visualizations
 - Power BI dashboard
 - Streamlit dashboard
+- Dashboard screenshots
 - GitHub project setup
 
 Planned next steps:
 
-- Add dashboard screenshots to README
 - Add customer segment analysis charts
 - Add discount vs profit analysis
 - Add state-level profitability map
+- Add dashboard filters and slicer examples
 
 ---
 
