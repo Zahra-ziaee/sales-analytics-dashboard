@@ -302,8 +302,6 @@ Business recommendation:
 
 ---
 
-## How to Run
-
 ## Power BI Dashboard
 
 An interactive Power BI dashboard was created to visualize the main sales KPIs and business insights.
@@ -325,6 +323,33 @@ Power BI file:
 
 ```text
 powerbi/superstore_sales_dashboard.pbix
+```
+
+---
+
+## Streamlit Dashboard
+
+The project also includes a Streamlit dashboard for interactive sales analytics.
+
+Run the Streamlit app:
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+The dashboard includes:
+
+- Main KPIs
+- Sales by Region
+- Sales by Category
+- Profit Margin by Category
+- Monthly Sales Trend
+- Top Products by Sales
+- Business Insights
+
+---
+
+## How to Run
 
 ### 1. Clone the repository
 
@@ -356,10 +381,16 @@ Place the raw Superstore CSV file here:
 data/raw/superstore.csv
 ```
 
-### 5. Run the project
+### 5. Run the Python analytics pipeline
 
 ```bash
 python main.py
+```
+
+### 6. Run the Streamlit dashboard
+
+```bash
+streamlit run app/streamlit_app.py
 ```
 
 ---
@@ -382,6 +413,8 @@ results/top_products_by_sales.csv
 results/figures/sales_by_region.png
 results/figures/sales_by_category.png
 results/figures/monthly_sales_trend.png
+
+powerbi/superstore_sales_dashboard.pbix
 ```
 
 ---
@@ -425,15 +458,16 @@ Completed:
 - Top product analysis
 - CSV output generation
 - Result visualizations
+- Power BI dashboard
+- Streamlit dashboard
 - GitHub project setup
 
 Planned next steps:
 
-- Build Power BI dashboard
+- Add dashboard screenshots to README
 - Add customer segment analysis charts
 - Add discount vs profit analysis
 - Add state-level profitability map
-- Add dashboard screenshots to README
 
 ---
 
@@ -445,6 +479,8 @@ Planned next steps:
 - Matplotlib
 - SQLite
 - SQL
+- Power BI
+- Streamlit
 - Git
 - GitHub
 
