@@ -1,528 +1,478 @@
+
 # Sales Analytics Dashboard
 
-A business intelligence and analytics project for analyzing Superstore sales data using Python, SQL, SQLite, Power BI, Streamlit, and data visualization.
+An end-to-end business analytics portfolio project built with **Python, SQL, SQLite, Pandas, Power BI, and Streamlit**.
 
-This project demonstrates an end-to-end analytics workflow: data loading, data cleaning, SQL database creation, KPI extraction, regional/category analysis, monthly trend analysis, product-level analysis, and dashboard-ready outputs.
+The project analyzes historical Superstore sales data to evaluate revenue, profitability, regional and product performance, monthly growth, and discount-related business risks.
 
----
+It demonstrates data preparation, SQL analytics, window functions, dashboard development, business interpretation, and automated validation.
 
-## Project Overview
+## Project Highlights
 
-Sales analytics helps businesses understand revenue performance, profitability, product contribution, customer behavior, and regional differences.
-
-This project analyzes the Superstore sales dataset and produces business KPIs, SQL query outputs, visualizations, a Power BI dashboard, and a Streamlit dashboard.
-
-The project includes:
-
-- Data loading with Python
-- Data cleaning and date parsing
-- Feature creation for time-based analysis
-- SQLite database creation
-- SQL KPI queries
-- Sales and profit analysis
-- Regional analysis
-- Category analysis
-- Monthly sales trend analysis
-- Top product analysis
-- Dashboard-ready CSV outputs
-- Result visualizations
-- Power BI dashboard
-- Streamlit dashboard
-
----
+- End-to-end data cleaning and SQLite database creation
+- Business KPI reporting and profitability analysis
+- Advanced SQL with CTEs and window functions
+- Month-over-month (MoM) growth using `LAG()`
+- Three-month rolling averages using `AVG() OVER`
+- Product ranking with `DENSE_RANK()` and `NTILE(4)`
+- Discount-band profitability and loss analysis
+- High-sales, low-profit product identification
+- Power BI and Streamlit dashboards
+- Reproducible CSV exports and automated tests
 
 ## Dataset
 
-The project uses a Superstore sales dataset.
-
-The raw dataset contains:
+The project uses a historical Superstore sales dataset covering **January 2014 through December 2017**.
 
 | Metric | Value |
 |---|---:|
-| Rows | 9,994 |
-| Columns | 21 |
-| Missing values | 0 |
+| Sales records | 9,994 |
+| Original columns | 21 |
+| Unique orders | 5,009 |
+| Unique customers | 793 |
+| Months analyzed | 48 |
 
-Main columns include:
+Key fields include order dates, customer details, regions, categories, product identifiers, sales, quantity, discount, and profit.
 
-- Order ID
-- Order Date
-- Ship Date
-- Ship Mode
-- Customer ID
-- Customer Name
-- Segment
-- Country
-- City
-- State
-- Postal Code
-- Region
-- Product ID
-- Category
-- Sub-Category
-- Product Name
-- Sales
-- Quantity
-- Discount
-- Profit
-
-The raw dataset is excluded from GitHub using `.gitignore`.
-
----
+The original dataset is excluded from the repository. Place the source CSV in `data/raw/superstore.csv` to rebuild the analysis from raw data.
 
 ## Project Structure
 
 ```text
 sales-analytics-dashboard/
-│
-├── app/
-│   └── streamlit_app.py
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── powerbi/
-│   ├── superstore_sales_dashboard.pbix
-│   ├── dashboard_screenshot.png
-│   ├── streamlit_dashboard_kpis.png
-│   ├── streamlit_dashboard_trends.png
-│   └── streamlit_dashboard_insights.png
-│
-├── results/
-│   ├── figures/
-│   │   ├── sales_by_region.png
-│   │   ├── sales_by_category.png
-│   │   └── monthly_sales_trend.png
-│   │
-│   ├── main_kpis.csv
-│   ├── sales_by_region.csv
-│   ├── sales_by_category.csv
-│   ├── monthly_sales_trend.csv
-│   └── top_products_by_sales.csv
-│
-├── sql/
-│   └── sales_kpi_queries.sql
-│
-├── src/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── data_loader.py
-│   ├── cleaning.py
-│   ├── database.py
-│   ├── analysis.py
-│   └── visualization.py
-│
-├── .gitignore
-├── main.py
-├── README.md
-└── requirements.txt
+|
+|-- app/
+|   `-- streamlit_app.py
+|
+|-- data/
+|   |-- raw/
+|   `-- processed/
+|
+|-- powerbi/
+|   |-- superstore_sales_dashboard.pbix
+|   |-- dashboard_screenshot.png
+|   |-- streamlit_dashboard_kpis.png
+|   |-- streamlit_dashboard_trends.png
+|   `-- streamlit_dashboard_insights.png
+|
+|-- results/
+|   |-- figures/
+|   |-- main_kpis.csv
+|   |-- sales_by_region.csv
+|   |-- sales_by_category.csv
+|   |-- monthly_sales_trend.csv
+|   |-- top_products_by_sales.csv
+|   |-- advanced_monthly_sales.csv
+|   |-- discount_band_analysis.csv
+|   `-- high_sales_low_profit.csv
+|
+|-- scripts/
+|   `-- export_advanced_reports.py
+|
+|-- sql/
+|   |-- sales_kpi_queries.sql
+|   |-- advanced_sales_analysis.sql
+|   |-- product_profitability_analysis.sql
+|   |-- high_sales_low_profit.sql
+|   |-- discount_profit_analysis.sql
+|   `-- discount_band_analysis.sql
+|
+|-- src/
+|   |-- __init__.py
+|   |-- config.py
+|   |-- data_loader.py
+|   |-- cleaning.py
+|   |-- database.py
+|   |-- analysis.py
+|   `-- visualization.py
+|
+|-- tests/
+|   |-- test_business_metrics.py
+|   `-- test_product_ranking.py
+|
+|-- .gitignore
+|-- main.py
+|-- README.md
+`-- requirements.txt
 ```
 
----
+The SQLite database is generated locally and is not required to be committed to Git.
 
-## Methodology
+## Analytics Workflow
 
-### 1. Data Loading
+### 1. Data Loading and Cleaning
 
-The raw Superstore CSV file is loaded using Python and Pandas.
+The Python pipeline:
 
-The loader also handles encoding issues and removes unwanted characters from column names.
+1. Loads the raw Superstore CSV.
+2. Standardizes column names and data types.
+3. Parses order and shipping dates.
+4. Handles duplicate records.
+5. Creates year, month, and year-month features.
+6. Calculates profit-margin features.
+7. Stores cleaned records in SQLite.
 
----
+The cleaned data is saved in the `sales` table of `sales_analytics.db`.
 
-### 2. Data Cleaning
+### 2. Core SQL Analytics
 
-The cleaning pipeline performs the following steps:
+The file `sql/sales_kpi_queries.sql` contains SQL analyses for:
 
-- Standardizes column names
-- Converts date columns into datetime format
-- Converts numeric columns into numeric types
-- Removes duplicate rows
-- Creates time-based features
-- Calculates profit margin
+- Overall sales, profit, orders, and customers
+- Sales and profitability by region
+- Sales and profitability by category
+- Monthly sales trends
+- Top-selling and most profitable products
+- Customer segments
+- Discounts and profitability
+- State-level sales performance
 
-Created features:
+### 3. Advanced Monthly Sales Analysis
+
+File: `sql/advanced_sales_analysis.sql`
+
+This analysis uses:
+
+- Common Table Expressions (CTEs)
+- `LAG()` for previous-month sales
+- Month-over-month growth percentages
+- `AVG() OVER` with a three-row window
+- `COUNT() OVER` to require a complete rolling window
+
+**MoM Growth**
 
 ```text
-order_year
-order_month
-order_year_month
-profit_margin
+MoM Growth (%) =
+(Current Month Sales - Previous Month Sales)
+ / Previous Month Sales * 100
 ```
 
----
-
-### 3. SQLite Database Creation
-
-After cleaning, the dataset is saved into a SQLite database:
+**Three-Month Rolling Average**
 
 ```text
-sales_analytics.db
+Rolling Average =
+(Current Month Sales
+ + Previous Month Sales
+ + Sales Two Months Earlier) / 3
 ```
 
-The cleaned data is stored in the table:
+The first month has no prior-month growth value. The first two months have no complete three-month rolling average.
 
-```text
-sales
-```
+The dashboard displays actual monthly sales and the rolling average together.
 
-This allows SQL-based analysis and makes the project closer to a real business analytics workflow.
+### 4. Product Profitability and Ranking
 
----
+Files:
 
-### 4. SQL KPI Analysis
+- `sql/product_profitability_analysis.sql`
+- `sql/high_sales_low_profit.sql`
 
-The project includes SQL queries for:
+The analysis evaluates products using total sales, total profit, profit margin, order count, and sales rankings.
 
-- Main business KPIs
-- Sales and profit by region
-- Sales and profit by category
-- Monthly sales and profit trend
-- Top products by sales
-- Top products by profit
-- Least profitable products
-- Customer segment analysis
-- Discount impact on profit
-- State-level sales and profit
+Advanced SQL techniques include:
 
-SQL queries are stored in:
+- `DENSE_RANK()` for product sales rankings
+- `NTILE(4)` for grouping products into sales quartiles
+- CTEs for intermediate calculations
+- Company-wide profit margin as a benchmark
 
-```text
-sql/sales_kpi_queries.sql
-```
+The priority report identifies up to 20 products in the highest sales quartile whose profit margins are below the company-wide margin, ordered by monetary profit/loss.
 
----
+### 5. Discount and Profitability Analysis
 
-## Main KPIs
+Files:
+
+- `sql/discount_band_analysis.sql`
+- `sql/discount_profit_analysis.sql`
+
+Discounts are analyzed in six groups:
+
+| Discount band |
+|---|
+| 0% |
+| 0–10% |
+| 10–20% |
+| 20–30% |
+| 30–50% |
+| Above 50% |
+
+The analysis calculates:
+
+- Number of order lines
+- Distinct orders within each band
+- Total sales and total profit
+- Profit margin
+- Average discount
+- Percentage of loss-making order lines
+
+The discount analysis is observational. It does not establish that discounts cause changes in profitability.
+
+A single order may contain lines in multiple discount bands, so distinct order counts should not be summed across bands.
+
+## Key Results
+
+### Overall Business KPIs
 
 | KPI | Value |
 |---|---:|
-| Total Sales | 2,297,200.86 |
-| Total Profit | 286,397.02 |
+| Total Sales | $2,297,200.86 |
+| Total Profit | $286,397.02 |
 | Total Orders | 5,009 |
 | Total Customers | 793 |
-| Profit Margin | 12.47% |
+| Overall Profit Margin | 12.47% |
 
----
+### Regional Performance
 
-## Sales by Region
+| Region | Total Sales | Total Profit | Profit Margin |
+|---|---:|---:|---:|
+| West | $725,457.82 | $108,418.45 | 14.94% |
+| East | $678,781.24 | $91,522.78 | 13.48% |
+| Central | $501,239.89 | $39,706.36 | 7.92% |
+| South | $391,721.91 | $46,749.43 | 11.93% |
 
-| Region | Total Sales | Total Profit | Total Orders | Profit Margin |
-|---|---:|---:|---:|---:|
-| West | 725,457.82 | 108,418.45 | 1,611 | 14.94% |
-| East | 678,781.24 | 91,522.78 | 1,401 | 13.48% |
-| Central | 501,239.89 | 39,706.36 | 1,175 | 7.92% |
-| South | 391,721.91 | 46,749.43 | 822 | 11.93% |
+The West region has the highest total sales and profit. Central has the lowest profit margin.
 
----
-
-## Sales by Category
+### Category Performance
 
 | Category | Total Sales | Total Profit | Profit Margin |
 |---|---:|---:|---:|
-| Technology | 836,154.03 | 145,454.95 | 17.40% |
-| Furniture | 741,999.80 | 18,451.27 | 2.49% |
-| Office Supplies | 719,047.03 | 122,490.80 | 17.04% |
+| Technology | $836,154.03 | $145,454.95 | 17.40% |
+| Furniture | $741,999.80 | $18,451.27 | 2.49% |
+| Office Supplies | $719,047.03 | $122,490.80 | 17.04% |
 
----
+Furniture generates substantial sales but has a relatively low profit margin.
 
-## Top Products by Sales
+### Advanced Monthly Sales Findings
 
-| Rank | Product | Category | Sub-Category | Sales | Profit |
-|---:|---|---|---|---:|---:|
-| 1 | Canon imageCLASS 2200 Advanced Copier | Technology | Copiers | 61,599.82 | 25,199.93 |
-| 2 | Fellowes PB500 Electric Punch Plastic Comb Binding Machine | Office Supplies | Binders | 27,453.38 | 7,753.04 |
-| 3 | Cisco TelePresence System EX90 Videoconferencing Unit | Technology | Machines | 22,638.48 | -1,811.08 |
-| 4 | HON 5400 Series Task Chairs for Big and Tall | Furniture | Chairs | 21,870.58 | 0.00 |
-| 5 | GBC DocuBind TL300 Electric Binding System | Office Supplies | Binders | 19,823.48 | 2,233.51 |
+For December 2017:
 
----
+| Metric | Value |
+|---|---:|
+| Monthly Sales | $83,829.32 |
+| Month-over-Month Growth | -29.23% |
+| Three-Month Rolling Average | $93,351.35 |
 
-## Business Insights
+The highest observed MoM growth was **+1132.13% in March 2014**.
 
-### 1. West is the strongest region by sales
+Large growth percentages can result from a low previous-month baseline and should be interpreted carefully.
 
-The West region generated the highest sales and profit.
+### Discount Analysis Findings
 
-Business recommendation:
+| Metric | Value |
+|---|---:|
+| Profit Margin Without Discount | 29.51% |
+| Profit Margin Above 50% Discount | -119.20% |
+| Loss-Making Lines Above 50% Discount | 100.00% |
 
-- Continue investing in the West region.
-- Study successful regional strategies and apply them to weaker regions.
+Higher discount bands are associated with weaker profit margins in this dataset.
 
----
+Differences in product mix, costs, and other factors may contribute to this relationship.
 
-### 2. Central has weaker profitability
+### High-Sales, Low-Profit Findings
 
-Central has significant sales volume but the lowest profit margin among the regions.
+The priority report contains 20 products, all of which have negative total profits in the current output.
 
-Business recommendation:
+The largest monetary loss among these products belongs to:
 
-- Investigate discounting, product mix, and operational costs in the Central region.
-- Reduce low-margin campaigns and improve pricing strategy.
+**Cubify CubeX 3D Printer Double Head Print**
 
----
+- Total loss: **-$8,879.97**
+- Profit margin: **-80.00%**
 
-### 3. Technology is the strongest category
+These products are candidates for further investigation of pricing, discounts, costs, and product-level profitability.
 
-Technology generated the highest sales and highest profit.
+The report is limited to 20 selected products; it does not represent the complete product catalog.
 
-Business recommendation:
+## Dashboards
 
-- Prioritize technology products in marketing campaigns.
-- Expand high-margin technology product lines.
+### Power BI Dashboard
 
----
+The Power BI report includes:
 
-### 4. Furniture has weak profit margin
-
-Furniture has high sales but very low profit margin.
-
-Business recommendation:
-
-- Review furniture discounts and shipping costs.
-- Identify unprofitable furniture sub-categories.
-- Improve pricing and inventory strategy.
-
----
-
-### 5. Some high-sales products are not profitable
-
-Some products with strong sales still generate negative profit.
-
-Business recommendation:
-
-- Monitor product-level profitability, not only revenue.
-- Reduce discounts on loss-making products.
-- Remove or reprice consistently unprofitable products.
-
----
-
-## Result Visualizations
-
-### Sales by Region
-
-![Sales by Region](results/figures/sales_by_region.png)
-
-### Sales by Category
-
-![Sales by Category](results/figures/sales_by_category.png)
-
-### Monthly Sales Trend
-
-![Monthly Sales Trend](results/figures/monthly_sales_trend.png)
-
----
-
-## Power BI Dashboard
-
-An interactive Power BI dashboard was created to visualize the main sales KPIs and business insights.
-
-Dashboard components include:
-
-- Total Sales
-- Total Profit
-- Profit Margin
-- Total Orders
-- Total Customers
-- Monthly Sales Trend
-- Sales by Region
-- Profit Margin by Category
-- Top Products by Sales
-- Key Business Insights
+- Main business KPIs
+- Regional and category analysis
+- Monthly sales performance
+- Product performance
+- Business insights
 
 Power BI file:
 
-```text
-powerbi/superstore_sales_dashboard.pbix
-```
-
-### Power BI Dashboard Preview
+`powerbi/superstore_sales_dashboard.pbix`
 
 ![Power BI Dashboard](powerbi/dashboard_screenshot.png)
 
----
+### Streamlit Dashboard
 
-## Streamlit Dashboard
+The Streamlit app includes:
 
-The project also includes a Streamlit dashboard for interactive sales analytics.
+- Main KPI cards
+- Sales by region and category
+- Category profitability
+- Monthly sales trends
+- Actual sales versus three-month rolling average
+- Latest MoM growth
+- Highest and lowest observed monthly growth
+- Top products by sales
+- Discount and profitability analysis
+- High-sales, low-profit product analysis
+- Detailed tables and business interpretations
 
-Run the Streamlit app:
+Existing dashboard screenshots:
 
-```bash
-streamlit run app/streamlit_app.py
-```
+![Streamlit KPIs](powerbi/streamlit_dashboard_kpis.png)
 
-The dashboard includes:
+![Streamlit Trends](powerbi/streamlit_dashboard_trends.png)
 
-- Main KPIs
-- Sales by Region
-- Sales by Category
-- Profit Margin by Category
-- Monthly Sales Trend
-- Top Products by Sales
-- Business Insights
+![Streamlit Insights](powerbi/streamlit_dashboard_insights.png)
 
-### Streamlit Dashboard Preview
-
-#### Main KPIs and Sales Overview
-
-![Streamlit Dashboard KPIs](powerbi/streamlit_dashboard_kpis.png)
-
-#### Profitability and Monthly Trends
-
-![Streamlit Dashboard Trends](powerbi/streamlit_dashboard_trends.png)
-
-#### Top Products and Business Insights
-
-![Streamlit Dashboard Insights](powerbi/streamlit_dashboard_insights.png)
-
----
+The screenshots are snapshots and may not include every feature in the latest application.
 
 ## How to Run
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Zahra-ziaee/sales-analytics-dashboard.git
 cd sales-analytics-dashboard
 ```
 
-### 2. Create and activate a virtual environment
+### 2. Create a Virtual Environment
 
-Windows PowerShell:
+On Windows CMD:
 
-```bash
+```cmd
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+.venv\Scripts\activate
 ```
 
-### 3. Install dependencies
+### 3. Install Dependencies
 
-```bash
-pip install -r requirements.txt
+```cmd
+python -m pip install -r requirements.txt
 ```
 
-### 4. Add the dataset
+### 4. Add the Dataset
 
-Place the raw Superstore CSV file here:
+Place the source Superstore CSV at:
 
 ```text
 data/raw/superstore.csv
 ```
 
-### 5. Run the Python analytics pipeline
+The raw dataset is not bundled with this repository.
 
-```bash
+### 5. Run the Main Analytics Pipeline
+
+```cmd
 python main.py
 ```
 
-### 6. Run the Streamlit dashboard
+This generates the cleaned data, local SQLite database, core CSV reports, and static visualizations.
 
-```bash
-streamlit run app/streamlit_app.py
+### 6. Export Advanced SQL Reports
+
+```cmd
+python scripts/export_advanced_reports.py
 ```
 
----
-
-## Outputs
-
-Running the project generates:
+This reads SQL queries from `sql/` and writes:
 
 ```text
-data/processed/superstore_cleaned.csv
-
-sales_analytics.db
-
-results/main_kpis.csv
-results/sales_by_region.csv
-results/sales_by_category.csv
-results/monthly_sales_trend.csv
-results/top_products_by_sales.csv
-
-results/figures/sales_by_region.png
-results/figures/sales_by_category.png
-results/figures/monthly_sales_trend.png
-
-powerbi/superstore_sales_dashboard.pbix
-powerbi/dashboard_screenshot.png
-powerbi/streamlit_dashboard_kpis.png
-powerbi/streamlit_dashboard_trends.png
-powerbi/streamlit_dashboard_insights.png
+results/advanced_monthly_sales.csv
+results/discount_band_analysis.csv
+results/high_sales_low_profit.csv
 ```
 
----
+The export script requires the `sales` table in the local SQLite database.
 
-## SQL Queries
+### 7. Run Automated Tests
 
-The SQL file contains reusable KPI queries:
-
-```text
-sql/sales_kpi_queries.sql
+```cmd
+python -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-Example KPI query:
+The tests require the SQLite database and generated report CSVs.
 
-```sql
-SELECT
-    ROUND(SUM(sales), 2) AS total_sales,
-    ROUND(SUM(profit), 2) AS total_profit,
-    COUNT(DISTINCT order_id) AS total_orders,
-    COUNT(DISTINCT customer_id) AS total_customers,
-    ROUND(SUM(profit) / SUM(sales), 4) AS profit_margin
-FROM sales;
+### 8. Launch Streamlit
+
+```cmd
+python -m streamlit run app/streamlit_app.py
 ```
 
----
+Open the local address printed by Streamlit, typically:
 
-## Current Status
+`http://localhost:8501`
 
-Completed:
+## Testing and Validation
 
-- Data loading
-- Data cleaning
-- Date parsing
-- Feature creation
-- SQLite database creation
-- SQL KPI queries
-- Sales KPI analysis
-- Regional analysis
-- Category analysis
-- Monthly trend analysis
-- Top product analysis
-- CSV output generation
-- Result visualizations
-- Power BI dashboard
-- Streamlit dashboard
-- Dashboard screenshots
-- GitHub project setup
+The project includes automated tests for:
 
-Planned next steps:
+**Monthly analytics**
 
-- Add customer segment analysis charts
-- Add discount vs profit analysis
-- Add state-level profitability map
-- Add dashboard filters and slicer examples
+- Monthly sales and profit totals
+- Month-over-month growth
+- Three-month rolling averages
+- Consistency between Pandas calculations and SQL output
 
----
+**Discount analysis**
 
-## Technologies Used
+- Order-line counts
+- Distinct order counts within bands
+- Sales and profit totals
+- Discount-band profitability metrics
+- Loss-making order-line percentages
+
+**Product prioritization**
+
+- Product-level aggregation
+- Sales quartile assignment
+- Sales rankings
+- Selection and ordering of priority products
+
+The current test suite contains three automated tests.
+
+These tests verify selected calculations and reporting logic; they are not a guarantee of complete coverage.
+
+## Business Recommendations
+
+Based on the descriptive results, potential follow-up analyses include:
+
+1. Investigate the Central region's lower profitability.
+2. Review the furniture category's product mix and costs.
+3. Examine products combining strong sales with negative profit.
+4. Compare discounted and non-discounted sales after accounting for product and order characteristics.
+5. Investigate monthly sales variability and potential seasonal patterns.
+
+Recommendations identify areas for investigation, not proven effects of interventions.
+
+## Technologies
 
 - Python
+- SQL
+- SQLite
 - Pandas
 - NumPy
 - Matplotlib
-- SQLite
-- SQL
-- Power BI
 - Streamlit
-- Git
-- GitHub
+- Power BI
+- unittest
+- Git and GitHub
 
----
+## Possible Future Improvements
+
+- Interactive customer-segment filters
+- Customer-level retention and purchase-frequency analysis
+- State-level geographic visualization
+- Deeper seasonality analysis
+- Additional business KPI tests
+- Automated report regeneration and CI
 
 ## Author
 
-Zahra Ziaee
+**Zahra Ziaee**
 
-Focus: Sales Analytics, Business Intelligence, SQL, Dashboarding, and Data-Driven Decision Making
+M.Sc. Computer Science – Data Mining
+
+Focus: Data Science, SQL Analytics, Business Intelligence, Machine Learning, and Data-Driven Decision Making
+
+GitHub: [Zahra-ziaee](https://github.com/Zahra-ziaee)
