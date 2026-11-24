@@ -1,0 +1,21 @@
+product_id,product_name,category,sub_category,total_sales,total_profit,profit_margin_pct,company_profit_margin_pct,total_orders,sales_rank,sales_quartile,business_flag
+TEC-MA-10000418,Cubify CubeX 3D Printer Double Head Print,Technology,Machines,11099.96,-8879.97,-80.0,12.47,3,23,1,Loss-making
+TEC-MA-10000822,Lexmark MX611dhe Monochrome Laser Printer,Technology,Machines,16829.9,-4589.97,-27.27,12.47,4,11,1,Loss-making
+TEC-MA-10004125,Cubify CubeX 3D Printer Triple Head Print,Technology,Machines,7999.98,-3839.99,-48.0,12.47,1,45,1,Loss-making
+FUR-TA-10000198,Chromcraft Bull-Nose Wood Oval Conference Tables & Bases,Furniture,Tables,9917.64,-2876.12,-29.0,12.47,5,29,1,Loss-making
+FUR-TA-10001889,Bush Advantage Collection Racetrack Conference Table,Furniture,Tables,9544.73,-1934.4,-20.27,12.47,7,31,1,Loss-making
+OFF-BI-10004995,GBC DocuBind P400 Electric Binding System,Office Supplies,Binders,17965.07,-1878.17,-10.45,12.47,6,9,1,Loss-making
+TEC-MA-10002412,Cisco TelePresence System EX90 Videoconferencing Unit,Technology,Machines,22638.48,-1811.08,-8.0,12.47,1,3,1,Loss-making
+OFF-SU-10002881,Martin Yale Chadless Opener Electric Letter Opener,Office Supplies,Supplies,16656.2,-1299.18,-7.8,12.47,6,12,1,Loss-making
+FUR-TA-10001950,Balt Solid Wood Round Tables,Furniture,Tables,6518.75,-1201.06,-18.42,12.47,4,72,1,Loss-making
+FUR-TA-10004289,BoxOffice By Design Rectangular and Half-Moon Meeting Room Tables,Furniture,Tables,1706.25,-1148.44,-67.31,12.47,3,347,1,Loss-making
+FUR-TA-10004154,"Riverside Furniture Oval Coffee Table, Oval End Table, End Table with Drawer",Furniture,Tables,4446.18,-1147.4,-25.81,12.47,5,126,1,Loss-making
+TEC-MA-10002210,Epson TM-T88V Direct Thermal Printer - Monochrome - Desktop,Technology,Machines,1212.7,-1057.23,-87.18,12.47,2,461,1,Loss-making
+FUR-CH-10003312,Hon 2090 “Pillow Soft” Series Mid Back Swivel/Tilt Chairs,Furniture,Chairs,5282.42,-989.05,-18.72,12.47,6,102,1,Loss-making
+FUR-BO-10001972,O'Sullivan 4-Shelf Bookcase in Odessa Pine,Furniture,Bookcases,2740.2,-975.1,-35.58,12.47,7,230,1,Loss-making
+FUR-TA-10004256,Bretford “Just In Time” Height-Adjustable Multi-Task Work Tables,Furniture,Tables,5634.9,-964.19,-17.11,12.47,4,92,1,Loss-making
+OFF-AP-10002534,3.6 Cubic Foot Counter Height Office Refrigerator,Office Supplies,Appliances,2946.2,-872.08,-29.6,12.47,5,211,1,Loss-making
+FUR-TA-10002958,"Bevis Oval Conference Table, Walnut",Furniture,Tables,6942.07,-856.01,-12.33,12.47,8,60,1,Loss-making
+OFF-ST-10004459,Tennsco Single-Tier Lockers,Office Supplies,Storage,9158.3,-825.75,-9.02,12.47,8,34,1,Loss-making
+FUR-TA-10002533,BPI Conference Tables,Furniture,Tables,2241.87,-795.97,-35.5,12.47,5,275,1,Loss-making
+TEC-MA-10004679,StarTech.com 10/100 VDSL2 Ethernet Extender Kit,Technology,Machines,2330.65,-785.76,-33.71,12.47,4,265,1,Loss-making
